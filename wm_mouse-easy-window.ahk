@@ -1,7 +1,6 @@
 ; 灵感来自于 https://wyagd001.github.io/v2/docs/scripts/index.htm#EasyWindowDrag
 ; 增加了右键调整窗口大小的功能
 
-LWin & LButton::  ; 左Win键 + 左鼠标按钮热键
 ; 窗口移动函数
 EWD_MoveWindow(*) {
   CoordMode "Mouse"  ; 切换到屏幕绝对坐标系
@@ -54,7 +53,6 @@ EWD_MoveWindow(*) {
 }
 
 
-LWin & RButton::  ; 左Win键 + 左鼠标按钮热键
 ; 设置窗口大小函数
 EWD_ReSizeWindow(*) {
   CoordMode "Mouse"

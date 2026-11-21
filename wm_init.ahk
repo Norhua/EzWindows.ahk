@@ -6,10 +6,6 @@
 
 #Include %A_ScriptDir%\fullscreen.ahk
 
-#q:: PostMessage 0x0112, 0xF060, , , "A"
-#+q:: WinKill("A")
-
-#t::
 MaximizeOrRestoreWindow(*) {
   winMinMax := WinGetMinMax("A")
   if (winMinMax = 1) {
@@ -21,3 +17,4 @@ MaximizeOrRestoreWindow(*) {
 
 #Include %A_ScriptDir%\wm_virtual-desktop.ahk
 #Include %A_ScriptDir%\wm_mouse-easy-window.ahk
+#Include %A_ScriptDir%\wm_keybind.ahk
