@@ -44,6 +44,50 @@ EzWindows.ahk/
 
 ---
 
+## 设置开机自启
+
+`init.ahk` 内部使用 `*UIAccess` 方式启动 `wm_init.ahk`，无需弹出 UAC 管理员提权确认框，因此可以直接将其配置为 Windows 开机自动启动。
+
+### 方法一：添加到 Windows“启动”文件夹（推荐）
+
+这是最简单、无需额外配置的方法：
+
+1. 按 `Win + R` 打开“运行”对话框，输入 `shell:startup` 并回车，打开当前用户的**启动**文件夹（默认路径为 `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`）。
+2. 在本项目根目录中找到 `init.ahk`，右键点击它并选择**创建快捷方式**（Windows 11 可先点击“显示更多选项”，或按住 `Alt` 键直接将 `init.ahk` 拖拽至“启动”文件夹）。
+3. 将生成的快捷方式放入刚才打开的“启动”文件夹中即可。下次登录 Windows 时系统会自动运行 `init.ahk`。
+
+也可以直接在项目根目录下打开 **PowerShell** 执行以下命令一键创建快捷方式：
+
+```powershell
+$ws = New-Object -ComObject WScript.Shell
+$s = $ws.CreateShortcut((Join-Path ([Environment]::GetFolderPath('Startup')) 'EzWindows.lnk'))
+$s.TargetPath = (Resolve-Path '.\init.ahk').Path
+$s.WorkingDirectory = (Get-Location).Path
+$s.Save()
+```
+
+### 方法二：通过任务计划程序配置（可选）
+
+如果需要设置**登录后延迟启动**，或者希望更精细地控制启动条件，可以使用 Windows 任务计划程序：
+
+1. 按 `Win + R` 输入 `taskschd.msc` 打开**任务计划程序**。
+2. 在右侧操作栏点击**创建任务...**。
+3. **常规**选项卡：填写任务名称（例如 `EzWindows`）。常规情况下无需勾选“使用最高权限运行”（`init.ahk` 通过 `*UIAccess` 启动 `wm_init.ahk` 即可控制绝大多数高权限窗口）。
+4. **触发器**选项卡：点击**新建**，将“开始任务”设为**登录时**（可按需勾选“延迟任务时间”，例如延迟 5 秒）。
+5. **操作**选项卡：点击**新建**，操作保持为**启动程序**：
+   - **程序或脚本**：填写 AutoHotkey v2 可执行文件路径（默认安装路径通常为 `C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe`）
+   - **添加参数**：填写 `init.ahk` 的完整路径（若路径包含空格请用英文双引号包裹，例如 `"D:\EzWindows.ahk\init.ahk"`）
+   - **起始于（可选）**：填写项目根目录路径（例如 `D:\EzWindows.ahk`）
+6. **条件**选项卡（笔记本用户建议）：取消勾选“只有在计算机使用交流电源时才启动此任务”，避免仅使用电池开机时不生效。
+7. 点击**确定**保存即可。
+
+> **注意**：
+> - **请勿直接复制或移动 `init.ahk` 到“启动”文件夹**，必须使用**快捷方式**或通过完整路径指向项目目录中的 `init.ahk`。否则脚本会因 `%A_ScriptDir%` 变化而找不到同目录下的 `fullscreen.ahk`、`keybind.ahk` 和 `wm_init.ahk`。
+> - 若需取消开机自启，方法一只需在 `shell:startup` 目录中删除对应的快捷方式；方法二在任务计划程序库中禁用或删除对应任务即可。
+> - 请确保 AutoHotkey v2 已安装在默认路径下，否则开机自启后 `init.ahk` 拉起 `wm_init.ahk` 时的 `UIAccess` 权限将无法生效。
+
+---
+
 ## 禁用 Windows 默认快捷键 (`DisabledHotkeys`)
 
 在 Windows 系统中，资源管理器（`explorer.exe`）默认注册了许多 `Win + <按键>` 的系统级快捷键，容易与自定义的窗口和桌面管理快捷键冲突。可以通过在注册表中创建 `DisabledHotkeys` 来按需禁用这些内置快捷键。
