@@ -13,10 +13,10 @@ LWin & RButton:: EWD_ReSizeWindow()  ; 左Win键 + 右鼠标按钮调整窗口�
 
 ; 目前共有8个窗口, 标号[0-7]
 ; Win + 数字/字母 跳转到对应的虚拟桌面
-#1:: DeskMove(0)
-#2:: DeskMove(1)
-#3:: DeskMove(2)
-#4:: DeskMove(3)
+#`:: DeskMove(0)
+#1:: DeskMove(1)
+#2:: DeskMove(2)
+#3:: DeskMove(3)
 
 #0:: DeskMove(7)
 #9:: DeskMove(6)
@@ -25,10 +25,10 @@ LWin & RButton:: EWD_ReSizeWindow()  ; 左Win键 + 右鼠标按钮调整窗口�
 #w:: DeskMove(4)
 
 ; Shift Win + 数字/字母 移动窗口到对应虚拟桌面
-#+1:: WinMoveToDesk(0)
-#+2:: WinMoveToDesk(1)
-#+3:: WinMoveToDesk(2)
-#+4:: WinMoveToDesk(3)
+#+`:: WinMoveToDesk(0)
+#+1:: WinMoveToDesk(1)
+#+2:: WinMoveToDesk(2)
+#+3:: WinMoveToDesk(3)
 
 #+0:: WinMoveToDesk(7)
 #+9:: WinMoveToDesk(6)
